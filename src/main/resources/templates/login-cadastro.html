@@ -1,0 +1,52 @@
+<link rel="stylesheet" th:href="@{/css/login-cadastro.css}">
+<body>
+<section class="login-cadastros">
+    <div class="container">
+        <div class="wrap-login-cadastro">
+            <div class="login-cliente">
+               <div class="content-login-cliente">
+                <form action="">
+                    <h2>ENTRAR</h2>
+                    <div>
+                        <label for="email-login">Seu Email</label><br>
+                        <input type="email" name="email-login" id="email-login" placeholder="Digite seu email" required >  
+                    </div>
+                    <div>
+                        <label for="password">Senha</label><br>
+                        <input type="password" name="password" id="password" placeholder="Digite sua senha" required >
+                    </div>
+                    
+                    <input type="submit" name="btn-logar" id="btn-logar" value="Entrar">  
+                </form>
+                </div><!--content-login-cliente-->
+            </div><!--login-cliente-->   
+           <div class="cadastro-cliente">
+               <div class="content-cadastro-cliente">
+                   <form th:action="@{/OpenBeer/login/salvar}" method="post" th:object="${login}" novalidate>
+                  <h2>CADASTRE-SE</h2>
+                   <div>
+                      <label for="email">Email</label><br>
+                      <input type="email" name="email" id="email" placeholder="Digite seu email" required th:classappend="${#fields.hasErrors('email')}? is-invalid" th:field="*{email}"> 
+                   
+                      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger">
+                          
+                      </div>
+                      
+                   </div>                   
+                    <div>
+                        <label for="password-cadastro">Senha</label><br>
+                        <input required type="password" name="password-cadastro" id="password-cadastro" placeholder="Digite sua senha" th:classappend="${#fields.hasErrors('hashSenha')}? is-invalid" th:field="*{hashSenha}">
+                    </div>
+                    <div>
+                        <label for="password-confirm">Confirmar Senha</label><br>
+                        <input type="password" name="password-confirm" id="password-confirm" placeholder="Confirme sua senha" required>
+                    </div>
+                    <input type="submit" name="btn-cadastrar-cliente" id="bnt-cadastrar-cliente" value="Cadastrar">
+                    <script type="text/javascript" th:src="@{/js/confirmarSenha.js}"></script>
+                </form>
+                </div><!--content-cadastro-cliente-->
+            </div><!--cadastro-login-->
+        </div><!--wrap-login-cadastro-->
+    </div><!--container-->
+</section><!--login-cadastro--> 
+</body>

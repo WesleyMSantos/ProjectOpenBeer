@@ -1,0 +1,42 @@
+<link rel="stylesheet" th:href="@{/css/dados-pessoais.css}">
+<body>
+<section class="dados-pessoais">
+    <div class="container">
+        <div class="wrap-dados-pessoais">
+               <div class="content-dados-pessoais">
+                   <form th:action="@{/OpenBeer/cliente/salvar}" method="post" th:object="${cliente}" novalidate>
+                    <h2>DADOS PESSOAIS</h2>
+                    <div>
+                        <label for="nome-completo">Nome Completo</label><br>
+                        <input type="text" name="nome-completo" id="nome-completo" placeholder="Digite seu nome completo" required th:classappend="${#fields.hasErrors('nomeCompleto')}? is-invalid" th:field="*{nomeCompleto}">  
+                    </div>
+                    <div class="wrap-cpf-tel">
+                       <div class="wrap-cpf">
+                            <label for="cpf">CPF</label>
+                            <input type="number" name="cpf" id="cpf" placeholder="Digite seu CPF" required th:classappend="${#fields.hasErrors('cpf')}? is-invalid" th:field="*{cpf}"> 
+                       </div><!--wrap-cpf-tel-->
+                        <div class="wrap-tel">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" name="telefone" id="telefone" placeholder="Digite seu Telefone" th:classappend="${#fields.hasErrors('telefone')}? is-invalid" th:field="*{telefone}">
+                        </div><!--wrap-tel-->   
+                    </div><!--wrap-cpf-tel-->
+                    <div>
+                        <label for="data-nascimento">Data de nascimento</label><br>
+                        <input type="date" name="data-nascimento" id="data-nascimento" required th:classappend="${#fields.hasErrors('dtNascimento')}? is-invalid" th:field="*{dtNascimento}">
+                    </div>
+                    <div class="wrap-sexo" >
+                        <input type="radio" id="masculino"
+                        name="sexo" value="M" th:field="*{sexo}">
+                        <label for="masculino">Masculino</label>
+                        <input type="radio" id="feminino"
+                        name="sexo" value="F" th:field="*{sexo}">
+                        <label for="feminino">Feminino</label>
+                    </div>
+                    
+                    <input type="submit" name="btn-logar" id="btn-logar" value="Continuar">  
+                </form>
+                </div><!--content-login-cliente-->  
+        </div><!--wrap-login-cadastro-->
+    </div><!--container-->
+</section><!--login-cadastro--> 
+</body>
