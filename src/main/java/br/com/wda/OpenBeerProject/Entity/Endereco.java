@@ -7,7 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -24,24 +28,21 @@ public class Endereco implements Serializable {
     @Column(name = "PK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-//    @Column(name = "DESTINATARIO")
-//    private String destinatario;
-
+    
+    @NotNull(message = "CEP OBRIGÁTORIO")
     @Column(name = "CEP")
     private String cep;
-
+    
+    @Size(min = 1, max = 100)
     @Column(name = "LOGRADOURO")
     private String logradouro;
-
+    
+    @NotNull(message = "NÚMERO OBRIGÁTOTIO")
     @Column(name = "NUMERO")
     private int numero;
 
     @Column(name = "COMPLEMENTO")
     private String complemento;
-
-//    @Column(name = "REFERENCIA")
-//    private String referencia;
 
     @Column(name = "BAIRRO")
     private String bairro;
@@ -51,9 +52,10 @@ public class Endereco implements Serializable {
 
     @Column(name = "ESTADO")
     private String estado;
-
-    @Column(name = "FK_CLIENTE")
-    private int idCliente;
+    
+    @ManyToOne
+    @JoinColumn(name = "FK_CLIENTE")
+    private Cliente idCliente;
 
     @Column(name = "TG_INATIVO")
     private int inativo;
@@ -67,14 +69,12 @@ public class Endereco implements Serializable {
     public Endereco() {
     }
 
-    public Endereco(Integer id, String destinatario, String cep, String logradouro, int numero, String complemento, String referencia, String bairro, String cidade, String estado, int idCliente, int inativo, LocalDateTime dhInclusao, LocalDateTime dhAlteracao) {
+    public Endereco(Integer id, String destinatario, String cep, String logradouro, int numero, String complemento, String referencia, String bairro, String cidade, String estado, Cliente idCliente, int inativo, LocalDateTime dhInclusao, LocalDateTime dhAlteracao) {
         this.id = id;
-//        this.destinatario = destinatario;
         this.cep = cep;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
-//        this.referencia = referencia;
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
@@ -91,15 +91,7 @@ public class Endereco implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
-//    public String getDestinatario() {
-//        return destinatario;
-//    }
-//
-//    public void setDestinatario(String destinatario) {
-//        this.destinatario = destinatario;
-//    }
-
+    
     public String getCep() {
         return cep;
     }
@@ -131,15 +123,7 @@ public class Endereco implements Serializable {
     public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-
-//    public String getReferencia() {
-//        return referencia;
-//    }
-//
-//    public void setReferencia(String referencia) {
-//        this.referencia = referencia;
-//    }
-
+    
     public String getBairro() {
         return bairro;
     }
@@ -164,11 +148,11 @@ public class Endereco implements Serializable {
         this.estado = estado;
     }
 
-    public int getIdCliente() {
+    public Cliente getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Cliente idCliente) {
         this.idCliente = idCliente;
     }
 

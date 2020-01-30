@@ -1,5 +1,5 @@
 var password = document.querySelector("password-cadastro");
-var password-confirm = document.querySelector("password-confirm");
+var password_confirm = document.querySelector("password-confirm");
 
 function validatePassword(){
   if(password-cadastro.value != password-confirm.value) {

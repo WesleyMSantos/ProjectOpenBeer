@@ -1,7 +1,10 @@
 package br.com.wda.OpenBeerProject.Security;
 
+import br.com.wda.OpenBeerProject.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    @Autowired
+    private LoginService loginService;
     
     public static PasswordEncoder plainPasswordEncoder(){
         return new PasswordEncoder() {
@@ -47,8 +53,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/css/**", "/img/**", "/js/**").permitAll()
+                .antMatchers("/OpenBeer/cerveja/BackOffice").hasRole("FUNCIONARIO")
+                .antMatchers("/OpenBeer/cerveja/Lista-de-Cervejas").hasRole("FUNCIONARIO")
+                .antMatchers("/OpenBeer/cerveja/novo").hasRole("FUNCIONARIO")
+                .antMatchers("/OpenBeer/endereco").authenticated()
             .and()
-                .formLogin()
-                    .loginPage("/login-cadastro");
+                .formLogin().permitAll()
+                    .loginPage("/OpenBeer/login/HomeLogin")
+                    .usernameParameter("email-login")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/OpenBeer/Home").permitAll();
+//            .and()
+//                .logout()
+//                    .logoutUrl("/logout")
+//                    .logoutSuccessUrl("/login?logout")
+//                    .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+//            .and()
+//                .exceptionHandling().accessDeniedPage("/erro/403");
+    }
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(loginService)
+        .passwordEncoder(new BCryptPasswordEncoder());
     }
 }

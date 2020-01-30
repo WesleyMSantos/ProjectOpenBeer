@@ -3,6 +3,7 @@ package br.com.wda.OpenBeerProject.Entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -41,7 +43,8 @@ public class Cerveja implements Serializable {
     @NotBlank(message = "CAMPO NOME DA CERVEJA OBRIGATÓRIO")
     @Column(name = "CERVEJA")
     private String nome;
-
+    
+    @Size(min = 1, max = 600)
     @NotBlank(message = "CAMPO DESCRIÇÃO OBRIGATÓRIO")
     @Column(name = "DESCRICAO")
     private String descricao;
@@ -76,6 +79,9 @@ public class Cerveja implements Serializable {
 
     @Column(name = "TG_INATIVO")
     private int inativo;
+    
+    @Column(name = "TG_DESTAQUE")
+    private boolean destaque;
 
     @Column(name = "DH_INCLUSAO", nullable = false, insertable = true, updatable = false)
     private LocalDateTime dhInclusao;
@@ -83,14 +89,23 @@ public class Cerveja implements Serializable {
     @Column(name = "DH_ALTERACAO", nullable = true, insertable = true, updatable = true)
     private LocalDateTime dhAlteracao;
     
-    @JoinTable(name="TB_TIPOCERVEJA")
-    @Column(name = "FK_TIPOCERVEJA")
-    private Integer tipoCerveja;
+    @ManyToOne
+    @JoinColumn(name="FK_TIPOCERVEJA")
+    private TipoCerveja tipoCerveja;
+    
+    @Column(name = "IMAGEMCERVEJA")
+    private String imagem;
+
+    
+    @Size(min = 1, max = 70)
+    @NotBlank(message = "CAMPO OBRIGATÓRIO")
+    @Column(name = "BREVEDESCRICAO")
+    private String breveDescricao;
 
     public Cerveja() { 
     }
 
-    public Cerveja(Integer id, String nome, String descricao, BigDecimal valorCerveja, String codigoCerveja, String marca, int teor, int quantidade, String mlCerveja, int inativo, LocalDateTime dhInclusao, LocalDateTime dhAlteracao, Integer tipoCerveja) {
+    public Cerveja(Integer id, String nome, String descricao, BigDecimal valorCerveja, String codigoCerveja, String marca, int teor, int quantidade, String mlCerveja, int inativo, boolean destaque, LocalDateTime dhInclusao, LocalDateTime dhAlteracao, TipoCerveja tipoCerveja, String imagem, String breveDescricao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -101,9 +116,12 @@ public class Cerveja implements Serializable {
         this.quantidade = quantidade;
         this.mlCerveja = mlCerveja;
         this.inativo = inativo;
+        this.destaque = destaque;
         this.dhInclusao = dhInclusao;
         this.dhAlteracao = dhAlteracao;
         this.tipoCerveja = tipoCerveja;
+        this.imagem = imagem;
+        this.breveDescricao = breveDescricao;
     }
 
     public Integer getId() {
@@ -186,6 +204,14 @@ public class Cerveja implements Serializable {
         this.inativo = inativo;
     }
 
+    public boolean isDestaque() {
+        return destaque;
+    }
+
+    public void setDestaque(boolean destaque) {
+        this.destaque = destaque;
+    }
+
     public LocalDateTime getDhInclusao() {
         return dhInclusao;
     }
@@ -202,12 +228,55 @@ public class Cerveja implements Serializable {
         this.dhAlteracao = dhAlteracao;
     }
 
-    public Integer getTipoCerveja() {
+    public TipoCerveja getTipoCerveja() {
         return tipoCerveja;
     }
 
-    public void setTipoCerveja(Integer tipoCerveja) {
+    public void setTipoCerveja(TipoCerveja tipoCerveja) {
         this.tipoCerveja = tipoCerveja;
     }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public String getBreveDescricao() {
+        return breveDescricao;
+    }
+
+    public void setBreveDescricao(String breveDescricao) {
+        this.breveDescricao = breveDescricao;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cerveja other = (Cerveja) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
+    
 
 }

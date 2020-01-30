@@ -2,9 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: helvetica;
-    color: #333333;
+    font-family: 'Montserrat', sans-serif;
 }
+
+section.dados-endereco {
+    padding: 100px 0;
+}
+
 
 body, html{
     height: 100%;
